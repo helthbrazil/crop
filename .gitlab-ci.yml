@@ -1,0 +1,47 @@
+stages:
+  - QualityAssurance
+  - Docker
+  - Rancher
+
+Sonar:
+  stage: QualityAssurance
+  image: dockerhub.policiamilitar.mg.gov.br/sonar/sonar-runner
+  script: scanner
+  only:
+    - homologacao
+    - producao
+
+ImagemHomologacao:
+  stage: Docker
+  image: dockerhub.policiamilitar.mg.gov.br/devops/docker-runner
+  script:
+    - docker build --build-arg AMBIENTE=hml -t dockerhub.policiamilitar.mg.gov.br/projetoexemplo/frontend:hml .
+    - docker push dockerhub.policiamilitar.mg.gov.br/projetoexemplo/frontend:hml
+  only:
+    - homologacao
+
+ImagemProducao:
+  stage: Docker
+  image: dockerhub.policiamilitar.mg.gov.br/devops/docker-runner
+  script:
+    - docker build --build-arg AMBIENTE=prod -t dockerhub.policiamilitar.mg.gov.br/projetoexemplo/frontend .
+    - docker push dockerhub.policiamilitar.mg.gov.br/projetoexemplo/frontend
+  only:
+    - producao
+
+TriggerRancherHomologacao:
+  stage: Rancher
+  image: tutum/curl
+  script:
+    - "curl -X POST -F token=4b80fcf663e941df600bda42f48a24 -F ref=homologacao -F variables[RC_PROJECT_NAME]=RH -F variables[RC_SERVICE]=frontend https://git.policiamilitar.mg.gov.br/api/v3/projects/<colocar o id do projeto>/trigger/builds"
+  only:
+    - homologacao
+
+TriggerRancherProducao:
+  stage: Rancher
+  image: tutum/curl
+  script:
+    - "curl -X POST -F token=4b80fcf663e941df600bda42f48a24 -F ref=producao -F variables[RC_PROJECT_NAME]=RH -F variables[RC_SERVICE]=frontend https://git.policiamilitar.mg.gov.br/api/v3/projects/<colocar o id do projeto>/trigger/builds"
+  only:
+    - producao
+

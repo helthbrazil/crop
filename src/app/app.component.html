@@ -1,0 +1,16 @@
+<div id="g" [hidden]="!loggedIn">
+  <span [innerHTML]="menuHTML"></span>
+  <header id="m">
+    <h1>{{title}}</h1>
+  </header>
+  <div id="n">
+    <a href="/intranet/newPrincipal.action">Principal</a> / <a href="#">Sistema de exemplo</a>
+  </div>
+
+  <div id="c2">
+    <pmmg-messages></pmmg-messages>
+    <router-outlet></router-outlet>
+  </div>  
+
+  <footer id="r">Polícia Militar de Minas Gerais © 2007 CTS</footer>
+</div>

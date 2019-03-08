@@ -1,0 +1,63 @@
+<form #formCtrl="ngForm" >
+  <h2>{{ 'Title.pessoa' | translate }}</h2>
+  <fieldset>
+    <div>
+      <label>{{ 'Label.nome' | translate }}</label>
+      <input id="nome" type="text" name="Nome" [(ngModel)]="pessoa.nome" required>
+    </div>
+    <div>
+      <label>{{ 'Label.rg' | translate }}</label>
+      <input id="rg" name="RG" class="tam-data" type="text" [(ngModel)]="pessoa.registroGeral" required>     
+    </div>
+    <div class="f1">
+      <label>{{ 'Label.uf' | translate }}</label>
+      <select id="ufRG" name="ufRG" [(ngModel)]="pessoa.estadoRegistroGeral" required>
+        <option *ngFor="let e of estadoOptions" [ngValue]="e">{{e.sigla}}</option>
+      </select>
+    </div>
+    <div class="f1">
+      <label>{{ 'Label.cpf' | translate }}</label>
+      <input id="cpf" name="cpf" type="text" [textMask]="{mask: maskCPF}"  [(ngModel)]="pessoa.cpf"  >
+    </div>
+    <div class="f1">
+        <label>Data de nascimento</label>
+        <calendario (alterouData)="alterarData($event)" [data]="model"></calendario>
+    </div>
+    <div>
+      <label>{{ 'Label.nomePai' | translate }}</label>
+      <input id="nomePai" name="nomePai" type="text" [(ngModel)]="pessoa.nomePai">
+    </div>
+    <div>
+      <label>{{ 'Label.nomeMae' | translate }}</label>
+      <input id="nomeMae" name="nomeMae" type="text" [(ngModel)]="pessoa.nomeMae">
+    </div>
+    <div>
+      <label>{{ 'Label.naturalidade' | translate }}</label>
+      <input id="naturalidade" name="naturalidade" type="text" [(ngModel)]="cidadeNaturalidade.nome" (keyup)="loadCidades()" autocomplete="off">
+      <div id="autoComp" class="jm opcoes auto-comp" *ngIf="cidadeOptions.length > 0"  >
+        <a class="c-list" *ngFor="let item of cidadeOptions" (click)="selecionaCidade(item)" >{{item.nome}}</a>
+      </div>
+    </div>
+    <div>
+      <label>{{ 'Label.sexo' | translate }}</label>
+      <span *ngFor="let g of generoOptions">
+      <input id="genero" name="options" type="radio"  [(ngModel)]="pessoa.genero" [value]="g" />
+      <label>{{g.descricao}}</label>
+    </span>
+    </div>    
+    <div *ngIf="!pessoa.nomeAnexo">
+      <label>{{ 'Label.anexo' | translate }}</label>
+      <input id="inpAnexo" type="file" ng2FileSelect [uploader]="uploader" />
+    </div> 
+    <div *ngIf="pessoa.nomeAnexo">
+      <label>{{ 'Label.anexo' | translate }}</label>
+      <span onmouseover="style.cursor='hand'" class="tc" (click)=downloadArquivo()>{{pessoa.nomeAnexo}}</span>
+      <a class="ic ex" title="Excluir" (click)="removerAnexo()"></a>       
+    </div>       
+  </fieldset>
+  <div class="su">
+    <button (click)="salvar()" [disabled]="!formCtrl.form.valid">{{ 'Button.salvar' | translate }}</button>
+    <button (click)="excluir()" [disabled]="!pessoa.id">{{ 'Button.excluir' | translate }}</button>
+    <button (click)="voltar()" >{{ 'Button.voltar' | translate }}</button>
+  </div>
+</form>

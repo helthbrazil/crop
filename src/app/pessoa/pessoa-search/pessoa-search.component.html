@@ -1,0 +1,59 @@
+<form #formCtrl="ngForm" >
+  <h2>{{ 'Label.pessoas' | translate }}<span><a routerLink="/pessoa/detail" class="ad">{{ 'Button.incluir' | translate }}</a></span></h2>
+  <fieldset>
+    <div class="f1 ob">
+      <label>{{ 'Label.nome' | translate }}</label>
+      <input id="nome" name="nome" type="text"  [(ngModel)]="nome" [required]="rg == ''">
+    </div>
+    <div class="f1 ob"> 
+      <label>{{ 'Label.rg' | translate }}</label>
+      <input id="rg" name="rg" type="text" [(ngModel)]="rg" [required]="nome == ''">   
+    </div>
+  </fieldset>
+  <div class="su">
+    <input type="button" value="{{ 'Button.pesquisar' | translate }}" (click)="filtrar(1)" >
+  </div>
+</form>
+<br/>
+<table class="t1 grid" *ngIf="pessoas && pessoas.length > 0">
+    <tbody>
+    <tr>
+      <th>{{ 'Label.nome' | translate }}</th> 
+      <th>{{ 'Label.rg' | translate }}</th>
+      <th style="width:5px"></th>
+    </tr>      
+    <tr *ngFor="let pessoa of pessoas | paginate: { id: 'server', itemsPerPage: itemsPerPage, currentPage: page, totalItems: total }">
+        <td>{{pessoa.nome}}</td>
+        <td>{{pessoa.registroGeral}}</td>
+        <td>
+            <a class="ic ed" title="Editar" routerLink="/pessoa/detail/{{pessoa.id}}"></a>
+        </td>        
+    </tr>
+    </tbody>
+</table>
+
+<div style="text-align: center">
+        <div class="carr" *ngIf="loading"></div>
+        <br/>
+
+        <pagination-template #p="paginationApi"
+                            id="server" *ngIf="pessoas && pessoas.length > 0"
+                            (pageChange)="getPage($event)">
+            <div class="pa">
+                {{ 'Label.pagina' | translate }}:
+                <a *ngIf="!p.isFirstPage()" [class.disabled]="p.isFirstPage()" (click)="p.previous()"> &lsaquo; </a>
+
+                <span *ngFor="let page of p.pages" [class.current]="p.getCurrent() === page.value">
+                    <a (click)="p.setCurrent(page.value)" *ngIf="p.getCurrent() !== page.value">
+                        <span>{{ page.label }}</span>
+                    </a>
+                    <a class="at" href="" *ngIf="p.getCurrent() === page.value">{{ page.label }}</a>
+                </span>
+
+                <a *ngIf="!p.isLastPage()" [class.disabled]="p.isLastPage()" (click)="p.next()"> &rsaquo; </a>
+                / <strong>{{ total }}</strong> {{ 'Label.registros' | translate }}
+            </div>
+        </pagination-template>               
+</div>
+
+

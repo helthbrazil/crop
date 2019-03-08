@@ -1,0 +1,61 @@
+<div id="c">
+  <h2>Enviar fotos</h2>
+  <p>As fotos devem exibir os ombros, ter proporção 1:1, e o arquivo deve seguir o padrão de nome:</p>
+  <div class="info-foto card">
+    <b>Número de polícia + tipo da foto + extenção do arquivo</b><br>
+    <span class="tc">Exemplo: 0123456A2.jpg, 0123456B1.jpg, 0123456SC.jpg</span>
+  </div>
+  <br>
+
+  <div class="su">
+    <button (click)="fileInput.click()" for='fileInput'>Selecionar Fotos</button>
+    <button *ngIf="imagensProcessadas?.length > 0" for='fileInput'>Enviar Fotos</button>
+    <button (click)="cancelar()" class="branco" *ngIf="imagensProcessadas?.length > 0" for='fileInput'>Cancelar</button>
+  </div>
+  <br>
+
+
+    <input draggable="true" class="no" (change)="lerArquivos($event)" multiple #fileInput type="file" id="fileInput" name="file"
+      accept="image/*" />
+
+  <div class="lista-fotos">
+    <figure (click)="cortarImagemManualmente(item)" *ngFor="let item of imagensProcessadas" title="Última atualização: 12/05/2018"
+      class="card ci pointer">
+      <img [src]="item.dataURL">
+      <figcaption><span (click)="excluirImagem(item)" class="jm su"><a href="#" class="ex" title="Excluir"></a></span>
+        <div class="menor tc">
+          <tr>
+            <td><img class="avatar" [src]="item.dataURLMiniatura"></td>
+            <td style="padding-left: 5px;">{{item.nome}}</td>
+          </tr>
+        </div>
+      </figcaption>
+    </figure>
+  </div>
+
+  <div *ngIf="showLoading" class="msg de carr flu fixo" id="upload">
+    {{mensagemLoading}}
+  </div>
+
+  <div>
+    <canvas style="display: none" class="output-image" *ngFor="let item of elementosCanvas" [id]="item.id"></canvas>
+  </div>
+
+  <div *ngIf="arquivoSelecionado" class="transp"></div>
+  <div *ngIf="arquivoSelecionado" class="jm jm-central">
+    
+    <h1>
+        <a (click)="fecharEdicaoManual()" class="ic fe2" href="#" title="Fechar"></a>
+        Nome do militar
+    </h1>
+    <div class="rol">
+      
+    <lib-cropper id="cropperImage" #cropperImage [options]="options" [imageFile]="arquivoSelecionado" (fail)="onFail($event)"
+      (fileChange)="onFileChange($event)"></lib-cropper>
+      
+    </div>
+      <br />
+      <div class="su"><button (click)="atualizarImagem()">Atualizar foto</button></div>
+  </div>
+
+</div>

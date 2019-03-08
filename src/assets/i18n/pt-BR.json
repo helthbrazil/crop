@@ -1,0 +1,35 @@
+{
+  "MSG": {
+    "falha.sistema": "Ocorreu uma falha de sistema, favor contactar o administrador do sistema.",
+    "registro.salvo.sucesso": "Registro salvo com sucesso.",
+    "registro.excluido.sucesso": "Registro excluido com sucesso.",
+    "campos.obrigatorios": "Preencha todos os campos obrigatórios.",
+    "nenhum.registro.encontrado": "Nenhum registro encontrado."
+  },
+  "Label": {
+    "nome": "Nome",
+    "rg": "RG",
+    "pagina": "Página",
+    "registros": "registros",
+    "pessoas": "Pessoas",
+    "nomePai": "Nome Pai",
+    "uf": "UF",
+    "cpf": "CPF",
+    "nomeMae": "Nome Mãe",
+    "naturalidade": "Naturalidade",
+    "sexo": "Sexo",
+    "anexo": "Anexo"
+  },
+  "Button": {
+    "incluir": "Incluir",
+    "pesquisar": "Pesquisar",
+    "excluir": "Excluir",
+    "salvar": "Salvar",
+    "voltar": "Voltar",  
+    "cancelar": "Cancelar"
+  },
+  "Title": {
+    "pessoa": "Pessoa"
+  }
+}
+
